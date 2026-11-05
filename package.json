@@ -1,0 +1,16 @@
+{
+  "name": "luojing-oracle-sanctuary",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interactive 3D Chinese calendar atlas and nine-method oracle sanctuary with annotated results",
+  "license": "MIT",
+  "scripts": {
+    "setup": "node scripts/fetch-vendor.mjs",
+    "test": "node verify.mjs && node verify-readings.mjs",
+    "start": "node scripts/serve.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "type": "module"
+}

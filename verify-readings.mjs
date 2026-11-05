@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {coinReading,plumNumbers,mutualHex,sixYao,smallSix,qimenGround,liurenBase,goldenFour,methods,drawUnique} from './dist/divination.js';
+import {hexNotes,explainHex} from './dist/hex-notes.js';
+import {tarotDeck,lenormandDeck} from './dist/card-data.js';
+assert.equal(hexNotes.length,64);for(let c=0;c<64;c++){const e=explainHex(c);assert.ok(e.theme&&e.note&&e.question);const six=sixYao(c);assert.equal(six.rows.filter(r=>r.role==='世').length,1);assert.equal(six.rows.filter(r=>r.role==='应').length,1);assert.ok(six.rows.every(r=>r.branch&&r.spirit&&r.relation&&r.element));assert.ok(mutualHex(c)>=0&&mutualHex(c)<64)}
+for(let x=0;x<4096;x++){let n=x;const values=Array.from({length:6},()=>{const v=6+n%4;n=Math.floor(n/4);return v}),r=coinReading(values);for(let i=0;i<6;i++){assert.equal((r.code>>i)&1,values[i]%2);assert.equal((r.changed>>i)&1,(values[i]%2)^([6,9].includes(values[i])?1:0))}}
+assert.deepEqual(coinReading([7,7,7,7,7,7]).moving,[]);assert.equal(coinReading([6,6,6,6,6,6]).changed,63);assert.equal(coinReading([9,9,9,9,9,9]).changed,0);assert.equal(plumNumbers(17,26,3).code,59);assert.equal(plumNumbers(17,26,3).moving[0],3);assert.throws(()=>plumNumbers(0,2,3));assert.equal(smallSix(1,1,1).index,0);assert.equal(smallSix(1,2,1).index,1);
+for(let j=1;j<=9;j++)for(let yang of [true,false]){const q=qimenGround(j,yang);assert.equal(q[j],'戊');assert.equal(new Set(Object.values(q)).size,9)}
+const example=liurenBase(3,11,1,6);assert.deepEqual(example.lessons,[{base:'丁',top:'寅'},{base:'寅',top:'酉'},{base:'亥',top:'午'},{base:'午',top:'丑'}]);for(let g=0;g<12;g++){const r=liurenBase(0,0,g,g);assert.deepEqual(r.sky,Array.from({length:12},(_,i)=>i))}assert.equal(goldenFour(0,0,1,6,'贵人').human,'甲');assert.equal(goldenFour(1,0,1,6,'贵人').human,'丙');
+assert.equal(methods.length,9);assert.equal(tarotDeck.length,78);assert.equal(lenormandDeck.length,36);assert.equal(new Set(tarotDeck.map(c=>c.name)).size,78);assert.equal(new Set(lenormandDeck.map(c=>c.name)).size,36);for(let c of [...tarotDeck,...lenormandDeck])assert.ok(c.note&&c.keys&&c.glyph);assert.equal(new Set(drawUnique(78,3)).size,3);
+console.log('Verified 64 annotations and palace assignments, 4096 coin cases, plum and small-six fixtures, 18 nine-palace layouts, classical four-lesson example, and complete card lists.');
